@@ -1,0 +1,34 @@
+const vader = require('vader-sentiment');
+
+const url = require("url-escape-tag");
+
+// const program = require("commander");
+const request = require("request");
+const xpath = require('xpath');
+const dom = require('xmldom').DOMParser;
+
+
+var pfp_url = ""
+
+module.exports = {
+	aliases: [
+		"vader"
+	],
+	arguments: [{
+		description: "VADER Sentiment Analysis",
+		key: "query",
+		type: "string",
+	}],
+	description: "Performs VADER sentiment analysis on a user (IN DEV)",
+	handler: args => {
+        message=args.query
+        console.log(message);
+
+        const input = message;
+        const intensity = vader.SentimentIntensityAnalyzer.polarity_scores(input);
+
+        console.log("message: " + message + " (" + "negative: " + intensity.neg + " neutral: " + intensity.neu + " positive: " + intensity.pos + " composite: " + intensity.compound + ")");
+        args.send("message: " + message + " (" + "negative: " + intensity.neg + " neutral: " + intensity.neu + " positive: " + intensity.pos + " composite: " + intensity.compound + ")")
+    },
+	name: "sentiment",
+};

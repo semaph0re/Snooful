@@ -21,10 +21,10 @@ module.exports = {
 					entry.definition,
 				].join("\n"));
 			}).catch(() => {
-				args.send(args.localize("urban_dictionary_no_result"));
+				// args.send(args.localize("urban_dictionary_no_result"));
 			});
 		} else {
-			args.send(args.localize("urban_dictionary_unspecified_word"));
+			// args.send(args.localize("urban_dictionary_unspecified_word"));
 		}
 	},
 	name: "urban",

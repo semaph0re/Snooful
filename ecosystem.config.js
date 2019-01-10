@@ -4,8 +4,8 @@ module.exports = {
 	apps: [{
 		autorestart: true,
 		env: {
-			DEBUG: "",
-			NODE_ENV: "production",
+			DEBUG: "snooful:*",
+			NODE_ENV: "development",
 		},
 		env_development: {
 			DEBUG: "snooful:*",

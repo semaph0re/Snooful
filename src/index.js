@@ -4,7 +4,7 @@ const { version, snooful } = require("./../package.json");
 const config = {
 	credentials: {},
 	prefix: "!",
-	settingsManager: "",
+	settingsManager: "@snooful/sqlite-settings",
 	...snooful,
 	...require("./../config.json"),
 };
@@ -103,6 +103,8 @@ function localize(lang = "en-US", key = "", ...formats) {
 
 // We use this to make a channel's settings wrapper
 const channelSub = require("./utils/channel-sub.js");
+const moment = require("moment-timezone");
+
 
 /**
  * Runs a command.
@@ -112,6 +114,11 @@ const channelSub = require("./utils/channel-sub.js");
  * @returns {undefined} Nothing is returned.
  */
 function handleCommand(command = "", channel = {}, message = {}) {
+	// CUSTOM CODE TO GET ALL CHANNEL MESSAGES
+	//log.commands("[%s: %s] %s: %s", moment().tz("EST"), channel.name, message._sender.nickname, command);
+	log.commands('time: "%s", channel: "%s", user: "%s", message: "%s"', moment().tz("EST"), channel.name, message._sender.nickname, command);
+	
+
 	if (command.startsWith(prefix) && message._sender.nickname !== client.nickname) {
 		const unprefixedCmd = command.replace(prefix, "");
 		log.commands("recieved command '%s' from '%s' channel", unprefixedCmd, channel.name);

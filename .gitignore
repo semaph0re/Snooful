@@ -1,3 +1,10 @@
+#nav dev
+nav-dev
+config.json
+*config.json
+*.bak
+*NOTES.txt
+
 # Logs
 logs
 *.log
