@@ -105,6 +105,9 @@ function localize(lang = "en-US", key = "", ...formats) {
 const channelSub = require("./utils/channel-sub.js");
 const moment = require("moment-timezone");
 
+// var NoSQL = require('nosql');
+// var nosqldb = NoSQL.load('./../chatdb/chats-nosql.json');
+
 
 /**
  * Runs a command.
@@ -116,8 +119,18 @@ const moment = require("moment-timezone");
 function handleCommand(command = "", channel = {}, message = {}) {
 	// CUSTOM CODE TO GET ALL CHANNEL MESSAGES
 	//log.commands("[%s: %s] %s: %s", moment().tz("EST"), channel.name, message._sender.nickname, command);
-	log.commands('time: "%s", channel: "%s", user: "%s", message: "%s"', moment().tz("EST"), channel.name, message._sender.nickname, command);
-	
+	var time=moment().tz("EST");
+
+	log.commands('time: "%s", channel: "%s", user: "%s", message: "%s"', time, channel.name, message._sender.nickname, command);
+
+	if(time && channel.name && message._sender.nickname && command){
+		console.log("write to db")
+		// nosqldb.insert({'time': time, 'channel.name': channel.name, 'message._sender.nickname': message._sender.nickname, 'message': command}, true);
+
+	} else {
+		console.log("dont write to db")
+	}
+
 
 	if (command.startsWith(prefix) && message._sender.nickname !== client.nickname) {
 		const unprefixedCmd = command.replace(prefix, "");
