@@ -7,6 +7,9 @@ const request = require("request");
 const xpath = require('xpath');
 const dom = require('xmldom').DOMParser;
 
+const JSONdb = require('simple-json-db');
+const navjsondb = new JSONdb('./../../chatdb/chats.json');
+
 
 var pfp_url = ""
 

@@ -45,7 +45,7 @@ module.exports = {
                 pfp_reddit_username = nodes[0].toString()
                 // console.log("profile pic: " + pfp_reddit_username)
                 
-                var myRegex = /(?:)https(.*)(.jpg|.png)/g;
+                var myRegex = /(?:)https(.*)(.jpg|.jpeg|.png|.gif)/g;
                 var test = pfp_reddit_username;
                 
                 pfp_src = myRegex.exec(test)

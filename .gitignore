@@ -1,11 +1,15 @@
 #nav dev
 nav-dev
 chatdb
-
+*.zip
 config.json
 *config.json
 *.bak
 *NOTES.txt
+*.old
+chats.json
+chatdb/*
+*.txt
 
 # Logs
 logs
@@ -74,3 +78,4 @@ settings*
 
 # config
 config.json
+chatdb/chats.json

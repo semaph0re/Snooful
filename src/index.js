@@ -108,11 +108,11 @@ const moment = require("moment-timezone");
 // var NoSQL = require('nosql');
 // var nosqldb = NoSQL.load('./../chatdb/chats-nosql.json');
 
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/";
+// var MongoClient = require('mongodb').MongoClient;
+// var url = "mongodb://localhost:27017/";
 
 const JSONdb = require('simple-json-db');
-const navjsondb = new JSONdb('./chats.json');
+const navjsondb = new JSONdb('./chatdb/chats.json');
 
 
 /**
@@ -130,18 +130,10 @@ function handleCommand(command = "", channel = {}, message = {}) {
 	log.commands('time: "%s", channel: "%s", user: "%s", message: "%s"', time, channel.name, message._sender.nickname, command);
 
 
-
-
 	if(time && channel.name && message._sender.nickname && command){
 		//console.log("write to db")
-		writeme = {
-			"time" : time,
-			"channel" : channel.name,
-			"sender" : message._sender.nickname,
-			"command" : command
-		};
-		// console.log(writeme)
-		navjsondb.set(channel.name, writeme);
+		writeme = {"time" : time, "channel" : channel.name, "sender" : message._sender.nickname, "command" : command}// console.log(writeme)
+		navjsondb.set(time, writeme);
 
 	} else {
 		// console.log("dont write to db")

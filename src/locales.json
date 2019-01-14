@@ -136,7 +136,7 @@
 			"The GitLab mirror of the GitHub repository can be found at {}.",
 			"There is a mirror of the GitHub repository on GitLab, which you can find at {}."
 		],
-		"info": "I am u/{0} ran by u/navkthx, ready to help you with anything you need!\nMy prefix is {1}, so to find a command you just do {1}command.\nI was made by haykam821, but please direct all questions and concerns via {1}feedback!",
+		"info": "lame ass bot 0.2 by u/navkthx - a mod of Snooful (originally by u/haykam821) for the vile ",
 		"integer_argument_invalid": "The value provided for the '{key}' argument must be an integer.",
 		"integer_argument_too_high": "The maximum for the '{key}' argument is {max}, but you gave {1}.",
 		"integer_argument_too_low": "The minimum for the '{key}' argument is {min}, but you gave {1}.",
