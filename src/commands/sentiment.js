@@ -7,6 +7,9 @@ const request = require("request");
 const xpath = require('xpath');
 const dom = require('xmldom').DOMParser;
 
+const JSONdb = require('simple-json-db');
+const navjsondb = new JSONdb('./../../chatdb/chats.json');
+
 
 var pfp_url = ""
 
@@ -15,11 +18,11 @@ module.exports = {
 		"vader"
 	],
 	arguments: [{
-		description: "VADER Sentiment Analysis",
+		description: "VADER Sentiment Analysis (text string)",
 		key: "query",
 		type: "string",
 	}],
-	description: "Performs VADER sentiment analysis on a user (IN DEV)",
+	description: "Performs VADER sentiment analysis on a text string",
 	handler: args => {
         message=args.query
         console.log(message);

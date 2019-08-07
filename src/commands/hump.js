@@ -7,15 +7,14 @@ var pfp_url = ""
 
 module.exports = {
     aliases: [
-		"murder",
-		"kills",
-	],
+		"humps",
+	],    
 	arguments: [{
-		description: "kill a bitch",
+		description: "hump a bitch",
 		key: "query",
 		type: "string",
 	}],
-	description: "kill a bitch",
+	description: "hump a bitch",
 	handler: args => {
         username=args.query
         console.log(username);
@@ -31,12 +30,9 @@ module.exports = {
         pfp_url=url`https://www.reddit.com/user/${username}`;
         console.log(pfp_url)
 
-        if( args.author == username || username == "me") {
-            args.send("*" + args.author + " kills herself*");
-        } else {
-            args.send("*" + args.author + " fuckin kills " + username + "*");
-        }
+
+        args.send("*" + args.author + " fuckin humps " + username + "*");
 
     },
-	name: "kill",
+	name: "hump",
 };

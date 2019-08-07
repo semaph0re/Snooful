@@ -47,10 +47,15 @@ function chanceFormats(msg) {
 /**
  * The prefix required by commands to be considered by the bot.
  */
-const prefix = config.prefix || "!";
+const prefix = config.prefix || "!" ;
 
 const parser = require("@snooful/orangered-parser");
 const creq = require("clear-require");
+const Sendbird = require("sendbird");
+const sb = new Sendbird({
+	appId: "2515BDA8-9D3A-47CF-9325-330BC37ADA13",
+});
+const GroupChannelHandler = new sb.GroupChannel();
 
 /**
  * Reloads the commands.
@@ -104,11 +109,31 @@ function localize(lang = "en-US", key = "", ...formats) {
 // We use this to make a channel's settings wrapper
 const channelSub = require("./utils/channel-sub.js");
 const moment = require("moment-timezone");
+const eventMessageFactory = require("./utils/event-message-handler.js");
 
 // var NoSQL = require('nosql');
 // var nosqldb = NoSQL.load('./../chatdb/chats-nosql.json');
 
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/";
 
+// NOT NEEDED ANYMORE SINCE NOW USING MONGODB
+// const JSONdb = require('simple-json-db');
+// const navjsondb = new JSONdb('./chatdb/chats.json');
+
+const vader = require('vader-sentiment');
+
+//WORKING ON ANNOUNCE FEATURE FOR EVERY FEW HUORS
+// var time=moment().tz("EST").format();
+// if(time == "2019-01-30T22:04:00.153Z"){
+// 	console.log("THE TIME IS RIGHT!!!!");
+// 	console.log("THE TIME IS RIGHT!!!!");
+// 	console.log("THE TIME IS RIGHT!!!!");
+// }
+
+function getMessage(message_inp) {
+	//console.log(message_inp);
+}
 /**
  * Runs a command.
  * @param {string} command The command to run, including prefix.
@@ -117,88 +142,155 @@ const moment = require("moment-timezone");
  * @returns {undefined} Nothing is returned.
  */
 function handleCommand(command = "", channel = {}, message = {}) {
-	// CUSTOM CODE TO GET ALL CHANNEL MESSAGES
-	//log.commands("[%s: %s] %s: %s", moment().tz("EST"), channel.name, message._sender.nickname, command);
-	var time=moment().tz("EST");
-
-	log.commands('time: "%s", channel: "%s", user: "%s", message: "%s"', time, channel.name, message._sender.nickname, command);
-
-	if(time && channel.name && message._sender.nickname && command){
-		console.log("write to db")
-		// nosqldb.insert({'time': time, 'channel.name': channel.name, 'message._sender.nickname': message._sender.nickname, 'message': command}, true);
-
+	if(message._sender == 'xxxclimaxxx') {
 	} else {
-		console.log("dont write to db")
-	}
+
+		// CUSTOM CODE TO GET ALL CHANNEL MESSAGES
+		//log.commands("[%s: %s] %s: %s", moment().tz("EST"), channel.name, message._sender.nickname, command);
+		var time=moment().tz("EST").format();
+		console.log("----------------------------------------------------------------------------------------------------------------------------------")
+		console.log('%s [%s] : [%s]: %s', time, channel.name, message._sender.nickname, command );
+		//console.log(message._sender);
+		
+		// console.log(GroupChannelHandler.lastMessage())
+		
+		// var pushprefs = function(channel){
+		// 	console.log("[PUSHPREF]")
+		// 	console.log(channel.members)
+		// }
+
+		if(channel.name == 'Shoot The Shit'){ //== 'Shoot The Shit'
+			// console.log("[+] channel.lastMessage");
+			//console.log(channel.lastMessage);
+			//console.log(message);
+			//console.log(channel.members);
+			//console.log("read user list " + channel.cachedReadReceiptStatus);
+			//console.log("channel: " + channel.name);
+			
+			//console.log("[+] channel: " + channel.name + ": cached members = " + Object.keys(channel.cachedReadReceiptStatus).length);
+			// console.log("------------------------------------------------------------------------------------------------------------")
+			//console.log(message);
+			// console.log("dupmping GroupChannelHandler")
+			// GroupChannelHandler.getPushPreference = (channel) => pushprefs(channel)
+			// GroupChannelHandler.getPushPreference(channel)
+		}
+		// working but opens and closes connection everytime, mad inefficient!
 
 
-	if (command.startsWith(prefix) && message._sender.nickname !== client.nickname) {
-		const unprefixedCmd = command.replace(prefix, "");
-		log.commands("recieved command '%s' from '%s' channel", unprefixedCmd, channel.name);
+		if(time && channel.name && message._sender.nickname && command){
+			//console.log("write to db")
+			writeme = {"time" : time, "channel" : channel.name, "sender" : message._sender.nickname, "command" : command}// console.log(writeme)
+			//navjsondb.set(time, writeme);
 
-		let chData = {
-			parsable: null,
-		};
-		if (channel.data) {
+			const intensity = vader.SentimentIntensityAnalyzer.polarity_scores(command);
+
+			// console.log("message: " + command + " (" + "negative: " + intensity.neg + " neutral: " + intensity.neu + " positive: " + intensity.pos + " composite: " + intensity.compound + ")");
+			
+			MongoClient.connect(url, function(err, db) {
+				if (err) throw err;
+				var dbo = db.db("chatdb");
+		
+				var myobj = {
+					"time": time,
+					"channel": channel.name,
+					"sender": message._sender.nickname,
+					"message": command,
+					"sentiment": intensity
+				};
+		
+				dbo.collection("chat_collection").insertOne(myobj, function(err, res) {
+					if (err) throw err;
+					//console.log("1 document inserted");
+					db.close();
+				});
+			});		
+
+		} else {
+			// console.log("dont write to db")
+		}
+
+		var prefix2='"-*'; //second trigger for u/Mickthebrick1
+
+		if (command.startsWith(prefix) || command.startsWith(prefix2) || command.includes(prefix2) && message._sender.nickname !== client.nickname) {
+			var unprefixedCmd = command.replace(prefix, "");
+			
+			if(command.startsWith(prefix2)){
+				var unprefixedCmd = command.replace(prefix2, "");
+			}
+
+			//find if the 2nd prefix exists anywhere in the string
+			if(command.includes(prefix2)){
+				var unprefixedCmd = command.substring(command.indexOf(prefix2) + 3);
+				console.log(unprefixedCmd);
+			}
+
+
+			log.commands("received command '%s' from '%s' channel", unprefixedCmd, channel.name);
+			console.log("received command '%s' from '%s' channel", unprefixedCmd, channel.name);
+
+			let chData = {
+				parsable: null,
+			};
+			if (channel.data) {
+				try {
+					chData = {
+						parsable: true,
+						...JSON.parse(channel.data),
+					};
+				} catch (error) {
+					chData = {
+						parsable: false,
+					};
+				}
+			}
+
+			const settingsWrapper = settings.subredditWrapper(channelSub(channel));
+
 			try {
-				chData = {
-					parsable: true,
-					...JSON.parse(channel.data),
-				};
+				parser.parse(unprefixedCmd, {
+					author: message._sender.nickname,
+					chData,
+					channel,
+					client,
+					locales,
+					/**
+					 * Formats a string based on the set language of the subreddit/DM.
+					 */
+					localize: (...args) => {
+						return localize(settingsWrapper.get("lang"), ...args);
+					},
+					localizeO: localize,
+					log: log.commands,
+					message,
+					prefix,
+					reddit,
+					registry: parser.getCommandRegistry(),
+					reload,
+					sb,
+					send: content => {
+						return new Promise((resolve, reject) => {
+							channel.sendUserMessage(content.toString(), (error, sentMessage) => {
+								if (error) {
+									reject(error);
+								} else {
+									resolve(sentMessage);
+								}
+							});
+						});
+					},
+					settings: settingsWrapper,
+					version,
+				});
 			} catch (error) {
-				chData = {
-					parsable: false,
-				};
+				safeFail(error);
 			}
 		}
 
-		const settingsWrapper = settings.subredditWrapper(channelSub(channel));
-
-		try {
-			parser.parse(unprefixedCmd, {
-				author: message._sender.nickname,
-				chData,
-				channel,
-				client,
-				locales,
-				/**
-				 * Formats a string based on the set language of the subreddit/DM.
-				 */
-				localize: (...args) => {
-					return localize(settingsWrapper.get("lang"), ...args);
-				},
-				localizeO: localize,
-				log: log.commands,
-				message,
-				prefix,
-				reddit,
-				registry: parser.getCommandRegistry(),
-				reload,
-				sb,
-				send: content => {
-					return new Promise((resolve, reject) => {
-						channel.sendUserMessage(content.toString(), (error, sentMessage) => {
-							if (error) {
-								reject(error);
-							} else {
-								resolve(sentMessage);
-							}
-						});
-					});
-				},
-				settings: settingsWrapper,
-				version,
-			});
-		} catch (error) {
-			safeFail(error);
-		}
 	}
+	
+	
+	
 }
-
-const Sendbird = require("sendbird");
-const sb = new Sendbird({
-	appId: "2515BDA8-9D3A-47CF-9325-330BC37ADA13",
-});
 
 // Use error-first callbacks, like every other library does
 sb.setErrorFirstCallback(true);
@@ -226,48 +318,82 @@ function acceptInvitesLate() {
 }
 
 const reddit = new Snoowrap(Object.assign(config.credentials, {
-	userAgent: `Snooful v${version}`,
+	userAgent: `NavSnooful v${version}`,
 }));
+
+
 
 /**
  * Grabs a new access token and connects to Sendbird.
  */
+// function launch() {
+// 	// Fetch our access token.
+// 	log.main("fetching new access token");
+// 	reddit.oauthRequest({
+// 		baseUrl: "https://s.reddit.com/api/v1",
+// 		method: "get",
+// 		uri: "/sendbird/me",
+// 	}).then(sbInfo => {
+// 		// Get our Reddit user ID
+// 		log.main("getting id");
+// 		reddit.getMe().id.then(id => {
+// 			// We have both necessary values, so let's connect to Sendbird!
+// 			log.main("connecting to sendbird");
+// 			pify(sb.connect.bind(sb), "t2_" + id, sbInfo.sb_access_token).then(userInfo => {
+// 				// We did it! Let's store the user info in a higher scope.
+// 				log.main("connected to sendbird");
+// 				client = userInfo;
+// 				console.log(client);
+
+// 				// Let's catch up on the invites we might've missed while offline.
+// 				acceptInvitesLate();
+// 			}).catch(() => {
+// 				log.main("couldn't connect to sendbird");
+// 			});
+// 		}).catch(() => {
+// 			log.main("could not get id");
+// 		});
+// 	}).catch(() => {
+// 		log.main("could not get access token");
+// 	});
+// }
+
 function launch() {
 	// Fetch our access token.
 	log.main("fetching new access token");
-	reddit.oauthRequest({
-		baseUrl: "https://s.reddit.com/api/v1",
-		method: "get",
-		uri: "/sendbird/me",
-	}).then(sbInfo => {
+		const sb_access_token = "308cc4458d194d5e5a2fe8889b290fa33bee6321"
 		// Get our Reddit user ID
 		log.main("getting id");
 		reddit.getMe().id.then(id => {
 			// We have both necessary values, so let's connect to Sendbird!
 			log.main("connecting to sendbird");
-			pify(sb.connect.bind(sb), "t2_" + id, sbInfo.sb_access_token).then(userInfo => {
+			pify(sb.connect.bind(sb), "t2_2yce3ccm", sb_access_token).then(userInfo => {
 				// We did it! Let's store the user info in a higher scope.
 				log.main("connected to sendbird");
 				client = userInfo;
+				console.log(client);
 
 				// Let's catch up on the invites we might've missed while offline.
 				acceptInvitesLate();
-			}).catch(() => {
+			}).catch((e) => {
 				log.main("couldn't connect to sendbird");
+				console.log(e);
 			});
 		}).catch(() => {
 			log.main("could not get id");
 		});
-	}).catch(() => {
-		log.main("could not get access token");
-	});
 }
+
 launch();
 
-const handler = new sb.ChannelHandler();
+const channelHandler = new sb.ChannelHandler();
 
-handler.onMessageReceived = (channel, message) => handleCommand(message.message, channel, message);
-handler.onUserReceivedInvitation = (channel, inviter, invitees) => {
+
+channelHandler.onMessageReceived = (channel, message) => handleCommand(message.message, channel, message);
+
+
+
+channelHandler.onUserReceivedInvitation = (channel, inviter, invitees) => {
 	if (invitees.map(invitee => invitee.nickname).includes(client.nickname)) {
 		// I have been invited to a channel.
 		log.invites("invited to channel");
@@ -292,8 +418,98 @@ handler.onUserReceivedInvitation = (channel, inviter, invitees) => {
 	}
 };
 
-const eventMessageFactory = require("./utils/event-message-handler.js");
-handler.onUserJoined = eventMessageFactory("join", settings, client.nickname);
-handler.onUserLeft = eventMessageFactory("leave", settings, client.nickname);
 
-sb.addChannelHandler("handler", handler);
+
+channelHandler.onUserJoined = (channel, user) => {
+	try {
+		//console.log(settings);
+		
+		console.warn("User u/" + user.nickname + " has JOINED the channel: " + channel.name)
+		if(channel.name == 'Shoot The Shit'){
+			// args.send("*User " + user.nickname + " has JOINED the channel*")
+			//pify(channel.sendUserMessage.bind(channel), channel.sendUserMessage("*User: " + user.nickname + " has been BANNED from channel*"))
+
+		}
+	} catch(error) {
+		console.warn("A problem happened while reading JOIN message");
+		console.warn(channel.name)
+		console.warn(user)		
+	}
+}
+
+
+
+channelHandler.onUserLeft = (channel, user) => {
+	try {
+		// console.warn("*User u/" + user.nickname + " has left the channel: " + channel.name + "*")
+		console.warn("User u/" + user.nickname + " has LEFT the channel: " + channel.name)
+		if(channel.name == 'Shoot The Shit'){
+			// args.send("*User u/" + user.nickname + " has LEFT the channel*")
+		}		
+	} catch(error) {
+		console.warn("A problem happened while reading LEAVE message");
+		console.warn(channel.name)
+		console.warn(user)
+	}
+}
+
+
+channelHandler.onUserEntered  = (channel, user) => {
+	try {
+		console.warn("[+] user: " + user.nickname + " has ENTERED channel: " + channel.name)
+	} catch(error) {
+		console.warn("A problem happened while reading onUserEntered message");
+		console.warn(channel.name)
+		console.warn(user)
+	}
+}
+
+channelHandler.onUserExited  = (channel, user) => {
+	try {
+		console.warn("[+] user: " + user.nickname + " has EXITED channel: " + channel.name)
+	} catch(error) {
+		console.warn("A problem happened while reading onUserExited message");
+		console.warn(channel.name)
+		// console.warn(user)
+	}
+}
+
+channelHandler.onUserBanned  = (channel, user) => {
+	try {
+		console.warn("[+] user: " + user.nickname + " has been BANNED from channel: " + channel.name)
+		console.warn("[+] user: " + user.nickname + " has been BANNED from channel: " + channel.name)
+		console.warn("[+] user: " + user.nickname + " has been BANNED from channel: " + channel.name)
+		console.warn("[+] user: " + user.nickname + " has been BANNED from channel: " + channel.name)
+		console.warn("[+] user: " + user.nickname + " has been BANNED from channel: " + channel.name)
+		console.warn("[+] user: " + user.nickname + " has been BANNED from channel: " + channel.name)
+		console.warn("[+] user: " + user.nickname + " has been BANNED from channel: " + channel.name)
+		console.warn("[+] user: " + user.nickname + " has been BANNED from channel: " + channel.name)
+		console.warn("[+] user: " + user.nickname + " has been BANNED from channel: " + channel.name)
+		console.warn("[+] user: " + user.nickname + " has been BANNED from channel: " + channel.name)
+
+		pify(channel.sendUserMessage.bind(channel), channel.sendUserMessage("*User: " + user.nickname + " has been BANNED from channel*"))
+	} catch(error) {
+		console.warn("A problem happened while reading onUserBanned message");
+		console.warn(channel.name)
+		// console.warn(user)
+	}
+}
+
+// channelHandler.onTypingStatusUpdated  = (channel) => {
+// 	try {
+// 		console.warn("[+] user: _____"  + " is typing in channel: " + channel.name)
+// 		// eventMessageFactory("typing", settings, user.nickname);
+// 		console.warn(channel.getTypingMembers())
+// 	} catch(error) {
+// 		console.warn("A problem happened during event onTypingStatusUpdated ");
+// 		console.warn(channel.name)
+// 		//console.warn(user)
+// 	}
+// }
+
+// channelHandler.onTypingStatusUpdated = eventMessageFactory("typing", settings, client);
+channelHandler.onUserJoined = eventMessageFactory("join", settings, client.nickname);
+channelHandler.onUserLeft = eventMessageFactory("leave", settings, client.nickname);
+channelHandler.onUserBanned = eventMessageFactory("ban", settings, client.nickname);
+
+sb.addChannelHandler("handler", channelHandler);
