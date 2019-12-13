@@ -7,15 +7,15 @@ var pfp_url = ""
 
 module.exports = {
 	aliases: [
-		"blunt",
-		"joint"
+		"cameron",
+		
 	],
 	arguments: [{
-		description: "Roll a fatass blunt to watch the shitshow",
-		key: "query",
+		description: "Tell cameron to stfu",
+		key: "null",
 		type: "string",
 	}],
-	description: "Roll a fatass blunt to watch the shitshow",
+	description: "Tell cameron to stfu",
 	handler: args => {
         // username=args.query
         // console.log(username);
@@ -32,8 +32,8 @@ module.exports = {
         // console.log(pfp_url)
 
 
-        args.send("*" + args.author + " rolls up a fatass blunt and sits down to watch the shitshow*");
+        args.send("shut the fuck up cameron! u/cmhall12");
 
     },
-	name: "weed",
+	name: "cm",
 };

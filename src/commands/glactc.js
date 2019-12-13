@@ -7,15 +7,15 @@ var pfp_url = ""
 
 module.exports = {
 	aliases: [
-		"blunt",
-		"joint"
+		"glactc",
+		
 	],
 	arguments: [{
-		description: "Roll a fatass blunt to watch the shitshow",
-		key: "query",
+		description: "glactc",
+		key: "null",
 		type: "string",
 	}],
-	description: "Roll a fatass blunt to watch the shitshow",
+	description: "glactc",
 	handler: args => {
         // username=args.query
         // console.log(username);
@@ -32,8 +32,8 @@ module.exports = {
         // console.log(pfp_url)
 
 
-        args.send("*" + args.author + " rolls up a fatass blunt and sits down to watch the shitshow*");
+        args.send("u/glactc is not gay he likes vaginas titties and asses (of girls). gay people? awesome. but hes not one of them");
 
     },
-	name: "weed",
+	name: "glactc",
 };

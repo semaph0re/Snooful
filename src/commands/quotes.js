@@ -80,7 +80,7 @@ module.exports = {
 				dbo.collection("quote_collection")
 				// .find({"channel":qChan, "sender":args.query})
 				.find({"channel":qChan})
-				.limit(5)
+				.limit(10)
 				.sort({"time": -1})
 				.toArray(function(err, items) {
 					console.log(items);
@@ -91,7 +91,7 @@ module.exports = {
 						num++;
 					});
 					console.log(final);
-					args.send("The last 5 added quotes were: \n" + final)
+					args.send("The last 10 added quotes were: \n" + final)
 	
 					db.close();
 				});

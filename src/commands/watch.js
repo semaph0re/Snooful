@@ -6,15 +6,12 @@ const dom = require('xmldom').DOMParser;
 var pfp_url = ""
 
 module.exports = {
-    aliases: [
-		"murder",
-	],
 	arguments: [{
-		description: "slay a bitch",
+		description: "watch a bitch",
 		key: "query",
 		type: "string",
 	}],
-	description: "slay a bitch",
+	description: "watch a bitch",
 	handler: args => {
         username=args.query
         console.log(username);
@@ -31,8 +28,8 @@ module.exports = {
         console.log(pfp_url)
 
 
-        args.send("*" + args.author + " fuckin slays " + username + "*");
+        args.send("*" + args.author + " fuckin watches " + username + " with a creepy smile*");
 
     },
-	name: "slay",
+	name: "watch",
 };

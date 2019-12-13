@@ -6,15 +6,15 @@ const dom = require('xmldom').DOMParser;
 var pfp_url = ""
 
 module.exports = {
-    // aliases: [
-	// 	"murder",
-	// ],
+    aliases: [
+		"shoots",
+	],
 	arguments: [{
-		description: "rape a bitch",
+		description: "shoot a bitch",
 		key: "query",
 		type: "string",
 	}],
-	description: "rape a bitch",
+	description: "shoot a bitch",
 	handler: args => {
         username=args.query
         console.log(username);
@@ -30,12 +30,9 @@ module.exports = {
         pfp_url=url`https://www.reddit.com/user/${username}`;
         console.log(pfp_url)
 
-        if( args.author == username) {
-            args.send("*" + args.author + " rapes himself*");
-        } else {
-            args.send("*" + args.author + " fuckin rapes " + username + "*");
-        }
+
+        args.send("*" + args.author + " fuckin shoots " + username + "*");
 
     },
-	name: "rape",
+	name: "shoot",
 };

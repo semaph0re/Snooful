@@ -6,6 +6,9 @@ const dom = require('xmldom').DOMParser;
 var pfp_url = ""
 
 module.exports = {
+	aliases: [
+		"tt",
+	],
 	arguments: [{
 		description: "tittytwist a bitch",
 		key: "query",
