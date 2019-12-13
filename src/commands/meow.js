@@ -7,16 +7,14 @@ var pfp_url = ""
 
 module.exports = {
 	arguments: [{
-		description: "fuckin meow",
+		description: "meow",
 		key: "query",
 		type: "string",
 	}],
-	description: "fuckin meow",
+	description: "meow",
 	handler: args => {
 
 
-        //args.send("*" + args.author + " fucking meows*");
-        //args.send("*" + args.author + " fucking meows*");
         args.send("*" + args.author + " meows intensely*");
         //args.send("*MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW*");
 		
