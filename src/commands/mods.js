@@ -6,6 +6,9 @@ const dom = require('xmldom').DOMParser;
 var mod_list_url = ""
 
 module.exports = {
+	aliases: [
+		"gays",
+	],
 	arguments: [{
 		description: "Get subreddit mods",
 		key: "query",

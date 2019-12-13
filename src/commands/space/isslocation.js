@@ -1,7 +1,7 @@
 const fetch = require("./../../utils/fetch.js");
 module.exports = {
 	aliases: [
-		"issposition",
+		"iss",
 		"isscoordinates",
 	],
 	description: "Gets the location of the ISS.",

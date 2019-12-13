@@ -29,6 +29,8 @@ module.exports = {
 				].join("\n"));
 			}).catch(() => {
 				// args.send(args.localize("urban_dictionary_no_result"));
+				args.send("No urban result found for " + args.term)
+
 			});
 		} else {
 			// args.send(args.localize("urban_dictionary_unspecified_word"));

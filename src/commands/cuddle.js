@@ -7,15 +7,14 @@ var pfp_url = ""
 
 module.exports = {
     aliases: [
-		"sex",
-		"fucks"
+        "smack"
 	],
 	arguments: [{
-		description: "fuck a bitch",
+		description: "cuddle someone",
 		key: "query",
 		type: "string",
 	}],
-	description: "fucks a bitch",
+	description: "cuddle someone",
 	handler: args => {
         username=args.query
         console.log(username);
@@ -32,8 +31,8 @@ module.exports = {
         console.log(pfp_url)
 
 
-        args.send("*" + args.author + " fucks " + username + "'s brains out*");
+        args.send("*" + args.author + " cuddles " + username + " with love*");
 
     },
-	name: "fuck",
+	name: "cuddle",
 };

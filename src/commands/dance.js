@@ -10,11 +10,11 @@ module.exports = {
 		"farts",
 	],
 	arguments: [{
-		description: "fart",
+		description: "dance",
 		key: "query",
 		type: "string",
 	}],
-	description: "fart",
+	description: "dance",
 	handler: args => {
         // username=args.query
         // console.log(username);
@@ -31,8 +31,8 @@ module.exports = {
         // console.log(pfp_url)
 
 
-        args.send("*" + args.author + " rips a nasty fart*");
+        args.send("*" + args.author + " dances around everyone*");
 
     },
-	name: "fart",
+	name: "dance",
 };

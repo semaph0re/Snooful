@@ -8,11 +8,11 @@ var pfp_url = ""
 module.exports = {
 
 	arguments: [{
-		description: "Grab some popcorn to watch the shitshow",
+		description: "Grab some popcorn to watch the sh*tshow",
 		key: "query",
 		type: "string",
 	}],
-	description: "Grab some popcorn to watch the shitshow",
+	description: "Grab some popcorn to watch the sh*tshow",
 	handler: args => {
         // username=args.query
         // console.log(username);
@@ -29,7 +29,7 @@ module.exports = {
         // console.log(pfp_url)
 
 
-        args.send("*" + args.author + " grabs some popcorn and sits down to watch the shitshow*");
+        args.send("*" + args.author + " grabs some popcorn and sits down to watch the sh*tshow*");
 
     },
 	name: "popcorn",
