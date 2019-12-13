@@ -15,6 +15,7 @@ module.exports = paginate("astronauts", async args => {
 }, {
 	command: {
 		aliases: [
+			"astro",
 			"astros",
 		],
 		description: "Lists the astronauts in space.",

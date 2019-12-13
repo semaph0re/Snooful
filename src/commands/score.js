@@ -15,11 +15,11 @@ var pfp_url = ""
 
 module.exports = {
 	arguments: [{
-		description: "User VADER Sentiment Analysis",
+		description: "See the most postive and negative comments for a user",
 		key: "query",
 		type: "string",
 	}],
-	description: "Performs VADER sentiment analysis on a user (IN DEV)",
+	description: "See the most postive and negative comments for a user",
 	handler: args => {
         message=args.query
         // console.log(message);

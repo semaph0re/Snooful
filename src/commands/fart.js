@@ -31,7 +31,7 @@ module.exports = {
         // console.log(pfp_url)
 
 
-        args.send("*" + args.author + " fuckin farts*");
+        args.send("*" + args.author + " rips a nasty fart*");
 
     },
 	name: "fart",

@@ -15,11 +15,11 @@ var pfp_url = ""
 
 module.exports = {
 	arguments: [{
-		description: "Show user stats for channel (IN DEV)",
+		description: "Show user stats for channel",
 		key: "query",
 		type: "string",
 	}],
-	description: "Show user stats for channel (IN DEV)",
+	description: "Show user stats for channel",
 	handler: args => {
         message=args.query
         // console.log(message);

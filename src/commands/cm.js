@@ -11,11 +11,11 @@ module.exports = {
 		
 	],
 	arguments: [{
-		description: "Tell cameron to stfu",
+		description: "Tell cameron to shut up",
 		key: "null",
 		type: "string",
 	}],
-	description: "Tell cameron to stfu",
+	description: "Tell cameron to shut up",
 	handler: args => {
         // username=args.query
         // console.log(username);
@@ -32,7 +32,7 @@ module.exports = {
         // console.log(pfp_url)
 
 
-        args.send("shut the fuck up cameron! u/cmhall12");
+        args.send("stfu cameron! u/cmhall12");
 
     },
 	name: "cm",

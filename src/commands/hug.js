@@ -10,11 +10,11 @@ module.exports = {
 		"hugs",
 	],
 	arguments: [{
-		description: "hug a bitch",
+		description: "hug someone",
 		key: "query",
 		type: "string",
 	}],
-	description: "hug a bitch",
+	description: "hug someone",
 	handler: args => {
         username=args.query
         console.log(username);
@@ -33,7 +33,7 @@ module.exports = {
         if( args.author == username) {
             // args.send("*" + args.author + " rapes himself*");
         } else {
-            args.send("*" + args.author + " fuckin hugs " + username + "*");
+            args.send("*" + args.author + " hugs " + username + "*");
         }
 
     },

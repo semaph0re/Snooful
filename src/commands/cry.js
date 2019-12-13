@@ -6,19 +6,17 @@ const dom = require('xmldom').DOMParser;
 var pfp_url = ""
 
 module.exports = {
-    aliases: [
-		"unzips",
-	],
 	arguments: [{
-		description: "unzip",
+		description: "cry",
 		key: "query",
 		type: "string",
 	}],
-	description: "unzip",
+	description: "cry",
 	handler: args => {
 
-        args.send("*" + args.author + " fucking unzips his pants and starts wanking to the shitshow*");
+
+        args.send("*" + args.author + " cries like a baby, WAAAHHH!*");
 
     },
-	name: "unzip",
+	name: "cry",
 };

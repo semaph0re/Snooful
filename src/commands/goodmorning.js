@@ -10,11 +10,11 @@ module.exports = {
 		"gm",
 	],
 	arguments: [{
-		description: "wish a bitch goodnight",
+		description: "wish someone goodmorning",
 		key: "query",
 		type: "string",
 	}],
-	description: "wish a bitch goodnight",
+	description: "wish someone goodmorning",
 	handler: args => {
         username=args.query
         console.log(username);
@@ -31,8 +31,8 @@ module.exports = {
         console.log(pfp_url)
 
 
-        args.send("*" + args.author + " throws water on " + username + " and wakes him the fuck up, GOODMORNING*");
+        args.send("*" + args.author + " throws water on " + username + " and wakes him up - GOODMORNING*");
 
     },
-	name: "goodnight",
+	name: "goodmorning",
 };

@@ -15,8 +15,11 @@ module.exports = {
 	handler: args => {
 
 
-        args.send("*" + args.author + " fucking meows*");
-
+        //args.send("*" + args.author + " fucking meows*");
+        //args.send("*" + args.author + " fucking meows*");
+        args.send("*" + args.author + " meows intensely*");
+        //args.send("*MEOW MEOW MEOW MEOW MEOW MEOW MEOW MEOW*");
+		
     },
 	name: "meow",
 };

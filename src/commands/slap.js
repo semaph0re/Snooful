@@ -7,16 +7,14 @@ var pfp_url = ""
 
 module.exports = {
     aliases: [
-        "smack",
-        "pop",
-        "pops"
+        "smack"
 	],
 	arguments: [{
-		description: "slap a bitch",
+		description: "slap someone",
 		key: "query",
 		type: "string",
 	}],
-	description: "slap a bitch",
+	description: "slap someone",
 	handler: args => {
         username=args.query
         console.log(username);
@@ -33,7 +31,7 @@ module.exports = {
         console.log(pfp_url)
 
 
-        args.send("*" + args.author + " slaps the shit outta " + username + "*");
+        args.send("*" + args.author + " slaps the hell outta " + username + "*");
 
     },
 	name: "slap",
