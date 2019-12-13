@@ -4,15 +4,15 @@ module.exports = {
 	apps: [{
 		autorestart: true,
 		env: {
-			DEBUG: "snooful:*",
+			DEBUG: "navsnoobot:*",
 			NODE_ENV: "development",
 		},
 		env_development: {
-			DEBUG: "snooful:*",
+			DEBUG: "navsnoobot:*",
 			NODE_ENV: "development",
 		},
 		instances: 1,
-		name: "Snooful",
+		name: "navsnoobot",
 		script: "./src/index.js",
 	}],
 };
