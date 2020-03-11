@@ -154,8 +154,8 @@ function getMessage(message_inp) {
 function handleCommand(command = "", channel = {}, message = {}) {
 
 
-		// CUSTOM CODE TO GET ALL CHANNEL MESSAGES
-		//log.commands("[%s: %s] %s: %s", moment().tz("EST"), channel.name, message._sender.nickname, command);
+		// FOR ALL CHANNEL MESSAGES
+		// log.commands("[%s: %s] %s: %s", moment().tz("EST"), channel.name, message._sender.nickname, command);
 		var time=moment().tz("EST").format();
 		console.log("----------------------------------------------------------------------------------------------------------------------------------")
 		console.log('%s [%s] : [%s]: %s', time, channel.name, message._sender.nickname, command );
