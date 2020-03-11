@@ -3,6 +3,7 @@ package-lock.json
 #nav dev
 nav-dev
 chatdb
+start_cmd.md
 
 config.json
 *config.json
