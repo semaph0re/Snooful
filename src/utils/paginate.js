@@ -53,7 +53,7 @@ module.exports = (command, data = [], opts = {}) => {
 				type: dataType,
 			});
 
-			const list = chunk(resolvedData.sort(), 5);
+			const list = chunk(resolvedData.sort(), 10);
 			if (resolvedData.length === 0) {
 				args.send(options.noItemsMessage ? args.localize(options.noItemsMessage, expandedArgs) : args.localize("no_pagination_items", dataType));
 			} else if (args.page <= list.length && args.page > 0) {

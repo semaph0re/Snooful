@@ -25,7 +25,7 @@ module.exports = {
 		{
 		  var cTemp = celsius;
 		  var cToFahr = cTemp * 9 / 5 + 32;
-		  var message = cTemp+'\xB0C is ' + cToFahr + ' \xB0F.';
+		  var message = cTemp+'\xB0C is ' + cToFahr + '\xB0F';
 			console.log(message);
 			return(message);
 		}
@@ -34,13 +34,13 @@ module.exports = {
 		{
 		  var fTemp = fahrenheit;
 		  var fToCel = (fTemp - 32) * 5 / 9;
-		  var message = fTemp+'\xB0F is ' + fToCel + '\xB0C.';
+		  var message = fTemp+'\xB0F is ' + fToCel + '\xB0C';
 			console.log(message);
 			return(message);
 		} 
 
 		var temp = args.query
-		var thenum = temp.match(/\d+/)[0] // "3"
+		var thenum = temp.match(/([+-]?\d+(\.\d+)*)/)[0] // get negative and postive numbers
 
 		if(temp.includes("c") || temp.includes("C")) {
 			console.log("[+] convert from celcius")

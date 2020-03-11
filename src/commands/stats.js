@@ -71,12 +71,12 @@ module.exports = {
 		console.log("[+] username: " + username);
 
 		//console.log(args.channel)
-		var custom_chan = "Shoot The Shit"
+		// var custom_chan = "Shoot The Shit"
 
 		// args.channel.name == custom_chan;
-		// if(args.channel.name == ''){
+		if(args.channel.name == ''){
 		// 	console.log("[+] args.channel.name is undefined")
-		// 	// args.channel.name = 'Shoot The Shit'
+			args.channel.name = 'Shoot The Shit'
 		// 	//console.log(args.channel.name);
 			
 		// 	console.log("[+] checking if this is a DM")
@@ -90,7 +90,7 @@ module.exports = {
 		// 	}
 		// 	return;
 
-		// }
+		}
 		console.log("=========")
 		//console.log(args.channel);
 		console.log("=========")

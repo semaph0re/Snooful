@@ -32,7 +32,7 @@ module.exports = {
         // console.log(pfp_url)
 
 
-        args.send("stfu cameron! u/cmhall12");
+        args.send("omfg, shut up cameron! u/cmhall12");
 
     },
 	name: "cm",

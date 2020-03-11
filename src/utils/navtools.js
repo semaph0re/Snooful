@@ -90,6 +90,75 @@ function fetch(url, args = {}, opts) {
 
 var navtools = {};
 
+// const MongoClient = require('mongodb').MongoClient;
+// const mongourl = 'mongodb://localhost:27017';
+
+
+navtools.dbtest = function (args) {
+	MongoClient.connect(mongourl, function(err, db) {
+		if (err) throw err;
+		var dbo = db.db("chatdb-dev");
+		var chanCmd = "Shoot The Shit";
+
+		var final = "";
+		dbo.collection("chan_settings_collection")
+		// .find({"channel":qChan, "sender":username})
+		.find({"channel":chanCmd})
+		// .limit(5)
+		.sort({"time": -1})
+		.toArray(function(err, items) {
+			console.log(items);
+			var num = 1;
+			items.forEach(function(item){
+				console.log(num + ") " + item.user);
+				// final = final + num + ") " + item.sender + ": \"" + item.user + "\"\n";
+				final = final + item.user + "\n";
+				num++;
+			});
+			console.log(final);
+			// args.send("Banned users: " + username + " were: \n" + final)
+			//args.send("Banned users: \n" + final)
+
+			db.close();
+		});
+
+	});
+}
+
+
+
+navtools.newtest = function (channelObj) {
+	console.log("[+] Running navtools.newtest => " + channelObj)
+	// var term = 'http://blah.com';
+	console.log(channelObj);
+    // var re = new RegExp(/(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,63}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?/);
+
+    // if (re.test(string)) {
+    //     console.log("Valid");
+    //     return true;
+    // }
+    // else {
+    //     console.log("Invalid");
+    //     return false;
+    // }
+}
+
+
+navtools.check_if_string_contains_url = function (string) {
+	console.log("[+] Running navtools.check_if_string_contains_url => " + string)
+	// var term = 'http://blah.com';
+    var re = new RegExp(/(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,63}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?/);
+
+    if (re.test(string)) {
+        console.log("Valid");
+        return true;
+    }
+    else {
+        console.log("Invalid");
+        return false;
+    }
+}
+
 navtools.parseUsername = function(username){
 	
 	if (username.startsWith("u/", 0)){
@@ -115,6 +184,18 @@ navtools.parseUsername = function(username){
 	
 	return objOutput;
 }
+
+navtools.firstAndLast = function firstAndLast(myArray) {
+			var firstItem = myArray[0];
+			var lastItem = myArray[myArray.length-1];
+			
+			 var objOutput = {
+			   first : firstItem,
+			   last : lastItem
+			  };
+			
+			return objOutput;
+		}
 
 navtools.isThisDM = function(argsChannelObj){
 	if(argsChannelObj.customType == 'direct'){

@@ -58,7 +58,7 @@ module.exports = {
 				 return string.substring(0,200)+'...';
 			else
 				 return string;
-	 };
+		};
 
 		// check if a username was provided
 		if(args.query === undefined){

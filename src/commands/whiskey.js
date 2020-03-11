@@ -8,11 +8,11 @@ var pfp_url = ""
 module.exports = {
 
 	arguments: [{
-		description: "Grab some whiskey to watch the sh*tshow",
+		description: "Grab some whiskey to watch the shitshow",
 		key: "query",
 		type: "string",
 	}],
-	description: "Grab some whiskey to watch the sh*tshow",
+	description: "Grab some whiskey to watch the shitshow",
 	handler: args => {
         // username=args.query
         // console.log(username);

@@ -77,3 +77,8 @@ settings*
 
 # config
 config.json
+src/commands/botban/getbanned.js.old
+src/commands/botban/*.old
+src/commands/*.old
+src/commands/*.bak
+*.bak

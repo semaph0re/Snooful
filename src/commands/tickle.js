@@ -28,7 +28,7 @@ module.exports = {
         console.log(pfp_url)
 
 
-        args.send("*" + args.author + " tickles " + username + "'s pickle*");
+        args.send("*" + args.author + " tickles " + username + "*");
 
     },
 	name: "tickle",

@@ -1,4 +1,10 @@
 // Used to expose version and include config from `snooful` object
+// var bot_chat_access_token = "14fba4db0e6710998b1b4e91bac2d358e3833439";
+const FormData = require("form-data");
+const { CookieJar } = require("tough-cookie");
+const got = require("got");
+
+var getJSON=require('get-json')
 const { version, snooful } = require("./../package.json");
 
 const config = {
@@ -28,8 +34,32 @@ const format = require("string-format");
 const upsidedown = require("upsidedown");
 
 const pify = require("./utils/promisify");
-
+const navtools = require("./utils/navtools.js");
 const chance = new require("chance").Chance();
+
+
+/**
+ * The prefix required by commands to be considered by the bot.
+ */
+const prefix = config.prefix || "!" ;
+
+
+const id = config.id;
+const user = config.credentials.username;
+const pass = config.credentials.password;
+
+
+const parser = require("@snooful/orangered-parser");
+const creq = require("clear-require");
+const Sendbird = require("sendbird");
+const sb = new Sendbird({
+	appId: "2515BDA8-9D3A-47CF-9325-330BC37ADA13",
+});
+const GroupChannelHandler = new sb.GroupChannel();
+
+
+
+
 /**
  * Selects a string.
  * @param {(object|*[]|*)} msg If an object, selects an key based on the weight value. If an array, picks a random element. Otherwise, converts to a string.
@@ -44,18 +74,6 @@ function chanceFormats(msg) {
 	}
 }
 
-/**
- * The prefix required by commands to be considered by the bot.
- */
-const prefix = config.prefix || "!" ;
-
-const parser = require("@snooful/orangered-parser");
-const creq = require("clear-require");
-const Sendbird = require("sendbird");
-const sb = new Sendbird({
-	appId: "2515BDA8-9D3A-47CF-9325-330BC37ADA13",
-});
-const GroupChannelHandler = new sb.GroupChannel();
 
 /**
  * Reloads the commands.
@@ -142,8 +160,7 @@ function getMessage(message_inp) {
  * @returns {undefined} Nothing is returned.
  */
 function handleCommand(command = "", channel = {}, message = {}) {
-	if(message._sender == 'xxxclimaxxx') {
-	} else {
+
 
 		// CUSTOM CODE TO GET ALL CHANNEL MESSAGES
 		//log.commands("[%s: %s] %s: %s", moment().tz("EST"), channel.name, message._sender.nickname, command);
@@ -156,9 +173,15 @@ function handleCommand(command = "", channel = {}, message = {}) {
 		
 		// var pushprefs = function(channel){
 		// 	console.log("[PUSHPREF]")
-		// 	console.log(channel.members)
+		// console.log(channel)
+		//console.log(message)
 		// }
 
+
+
+
+
+		
 		if(channel.name == 'Shoot The Shit'){ //== 'Shoot The Shit'
 			// console.log("[+] channel.lastMessage");
 			//console.log(channel.lastMessage);
@@ -188,7 +211,7 @@ function handleCommand(command = "", channel = {}, message = {}) {
 			
 			MongoClient.connect(url, function(err, db) {
 				if (err) throw err;
-				var dbo = db.db("chatdb");
+				var dbo = db.db("chatdb-dev");
 		
 				var myobj = {
 					"time": time,
@@ -201,6 +224,30 @@ function handleCommand(command = "", channel = {}, message = {}) {
 				dbo.collection("chat_collection").insertOne(myobj, function(err, res) {
 					if (err) throw err;
 					//console.log("1 document inserted");
+					//db.close();
+				});
+				
+				var my_disabled_cmds;
+				var final = "";
+				dbo.collection("permissions")
+				// .find({"channel":qChan, "sender":args.query})
+				.find({"channel":channel.name})
+				//.limit(5)
+				//.sort({"time": -1})
+				.toArray(function(err, items) {
+
+					my_disabled_cmds = items;
+					console.log(items);
+					// var num = 1;
+					items.forEach(function(item){
+						//console.log(num + ") " + item);
+						console.log("===================");
+						console.log(item.disabled_cmd);
+						
+					});
+					//console.log(final);
+					// args.send("The last 5 added quotes were: \n" + final)
+	
 					db.close();
 				});
 			});		
@@ -209,24 +256,68 @@ function handleCommand(command = "", channel = {}, message = {}) {
 			// console.log("dont write to db")
 		}
 
-		var prefix2='"-*'; //second trigger for u/Mickthebrick1
-
+		var prefix2='—'; //second trigger for u/Mickthebrick1
+		//var command = command.toLowerCase();
 		if (command.startsWith(prefix) || command.startsWith(prefix2) || command.includes(prefix2) && message._sender.nickname !== client.nickname) {
 			var unprefixedCmd = command.replace(prefix, "");
 			
+
+
 			if(command.startsWith(prefix2)){
 				var unprefixedCmd = command.replace(prefix2, "");
 			}
 
 			//find if the 2nd prefix exists anywhere in the string
 			if(command.includes(prefix2)){
-				var unprefixedCmd = command.substring(command.indexOf(prefix2) + 3);
+				var unprefixedCmd = command.substring(command.indexOf(prefix2) + 1);
 				console.log(unprefixedCmd);
 			}
 
 
 			log.commands("received command '%s' from '%s' channel", unprefixedCmd, channel.name);
 			console.log("received command '%s' from '%s' channel", unprefixedCmd, channel.name);
+
+			const mongourl = 'mongodb://localhost:27017';
+
+			MongoClient.connect(mongourl, function(err, db) {
+				if (err) throw err;
+				var dbo = db.db("chatdb-dev");
+			  
+				var final = "";
+				dbo.collection("chan_settings_collection")
+				.find({"channel":channel.name})
+				// .find({"channel":qChan})
+				// .limit(5)
+				.sort({"time": -1})
+				.toArray(function(err, items) {
+					//console.log(items);
+
+					var arrFound = items.filter(function(item) {
+						//console.log(item);
+
+						// check if user is banned
+						return item.user == message._sender.nickname;
+					  });
+					  
+					  console.log("arrFound");
+					  console.log(arrFound.length);
+					  if(arrFound.length > 0) {
+						console.log("[+] user is banned from bot in this chan");
+					} 
+
+					var num = 1;
+					// items.forEach(function(item){
+					// 	//console.log(num + ") " + item);
+					// 	final = final + num + ") " + item.user + "\n";
+					// 	num++;
+					// });
+					// console.log(final);
+					//args.send("Users banned from bot in #" + channel.name + ": \n" + final)
+	
+					db.close();
+				});
+				//safeFail("error");
+			});
 
 			let chData = {
 				parsable: null,
@@ -286,7 +377,7 @@ function handleCommand(command = "", channel = {}, message = {}) {
 			}
 		}
 
-	}
+	
 	
 	
 	
@@ -323,23 +414,15 @@ const reddit = new Snoowrap(Object.assign(config.credentials, {
 
 
 
-/**
- * Grabs a new access token and connects to Sendbird.
- */
 // function launch() {
 // 	// Fetch our access token.
 // 	log.main("fetching new access token");
-// 	reddit.oauthRequest({
-// 		baseUrl: "https://s.reddit.com/api/v1",
-// 		method: "get",
-// 		uri: "/sendbird/me",
-// 	}).then(sbInfo => {
+// 		const sb_access_token = bot_chat_access_token;
 // 		// Get our Reddit user ID
 // 		log.main("getting id");
-// 		reddit.getMe().id.then(id => {
 // 			// We have both necessary values, so let's connect to Sendbird!
 // 			log.main("connecting to sendbird");
-// 			pify(sb.connect.bind(sb), "t2_" + id, sbInfo.sb_access_token).then(userInfo => {
+// 			pify(sb.connect.bind(sb), "t2_4f7h8qpb", sb_access_token).then(userInfo => {
 // 				// We did it! Let's store the user info in a higher scope.
 // 				log.main("connected to sendbird");
 // 				client = userInfo;
@@ -347,42 +430,68 @@ const reddit = new Snoowrap(Object.assign(config.credentials, {
 
 // 				// Let's catch up on the invites we might've missed while offline.
 // 				acceptInvitesLate();
-// 			}).catch(() => {
+// 			}).catch((e) => {
 // 				log.main("couldn't connect to sendbird");
+// 				console.log(e);
 // 			});
-// 		}).catch(() => {
-// 			log.main("could not get id");
-// 		});
-// 	}).catch(() => {
-// 		log.main("could not get access token");
-// 	});
 // }
 
+
+
+/**
+ * Grabs a new access token and connects to Sendbird.
+ */
 function launch() {
-	// Fetch our access token.
-	log.main("fetching new access token");
-		const sb_access_token = "308cc4458d194d5e5a2fe8889b290fa33bee6321"
-		// Get our Reddit user ID
-		log.main("getting id");
-		reddit.getMe().id.then(id => {
-			// We have both necessary values, so let's connect to Sendbird!
-			log.main("connecting to sendbird");
-			pify(sb.connect.bind(sb), "t2_2yce3ccm", sb_access_token).then(userInfo => {
+	const form = new FormData();
+	form.append("user", user);
+	form.append("passwd", pass);
+	form.append("api_type", "json");
+
+	// console.log("fetching session token");
+	got.post({
+		body: form,
+		url: "https://ssl.reddit.com/api/login",
+	}).then(res => {
+		// console.log(res.body);
+		const cookieJar = new CookieJar();
+		cookieJar.setCookieSync("reddit_session=" + encodeURIComponent(JSON.parse(res.body).json.data.cookie), "https://s.reddit.com");
+
+		// Fetch our access token.
+		// console.log("fetching new access token");
+		got({
+			cookieJar,
+			method: "get",
+			url: "https://s.reddit.com/api/v1/sendbird/me",
+		}).then(sbRes => {
+			const sbInfo = JSON.parse(sbRes.body);
+			// console.log(sbInfo);
+			console.log(sbInfo.sb_access_token);
+			// return sbInfo.sb_access_token;
+
+
+			console.log("connecting to sendbird");
+			pify(sb.connect.bind(sb), id, sbInfo.sb_access_token).then(userInfo => {
 				// We did it! Let's store the user info in a higher scope.
-				log.main("connected to sendbird");
+				console.log("connected to sendbird");
 				client = userInfo;
 				console.log(client);
 
 				// Let's catch up on the invites we might've missed while offline.
 				acceptInvitesLate();
 			}).catch((e) => {
-				log.main("couldn't connect to sendbird");
+				console.log("couldn't connect to sendbird");
 				console.log(e);
 			});
+
 		}).catch(() => {
-			log.main("could not get id");
+			console.log("could not get access token");
 		});
+	}).catch(() => {
+		console.log("could not get session token");
+	});
 }
+
+
 
 launch();
 
@@ -396,25 +505,84 @@ channelHandler.onMessageReceived = (channel, message) => handleCommand(message.m
 channelHandler.onUserReceivedInvitation = (channel, inviter, invitees) => {
 	if (invitees.map(invitee => invitee.nickname).includes(client.nickname)) {
 		// I have been invited to a channel.
+	
 		log.invites("invited to channel");
+		//console.log("[+] channel");
+		//console.log(channel);
+		
+		//console.log("[+] inviter");
+		//console.log(inviter);
+		
+		//console.log("[+] invitees");
+		//console.log(invitees);
 
-		// Let's join!
-		pify(channel.acceptInvitation.bind(channel)).then(() => {
-			log.invites(`automatically accepted channel invitation to ${channel.name}`);
+		var inviteruser = inviter.nickname;
+		console.log("[+] INVITED BY: " + inviteruser)
 
-			// Now that we've joined, let's send our introductory message!
-			pify(channel.sendUserMessage.bind(channel), channel.sendUserMessage(localize("en-US", "invite_message", {
-				inviter: inviter.nickname,
-				me: client.nickname,
-				prefix,
-			}))).then(() => {
-				log.invites("sent introductory message");
-			}).catch(() => {
-				log.invites("failed to send introductory message");
+		var obj = JSON.parse(channel.data)
+		var sub = obj.subreddit.name;
+		console.log("[+] TO SUBREDDIT: " + sub)
+
+		var modListArray = [];
+            
+		// this one is to produce a nice list in the chan
+		var modlist = "";
+
+		mod_list_url="https://www.reddit.com/r/" + sub + "/about/moderators.json";
+		getJSON(mod_list_url)
+		.then(function(response) {
+			//console.log(response.data.children);
+
+			response.data.children.forEach(function(child) {
+				var modName = child.name.replace(/,/g,"");
+				//console.log(modName);
+				modlist = modlist + modName.replace(/,/g,"") + "\n";
+				modListArray.push(modName);
 			});
-		}).catch(() => {
-			log.invites("failed to accept channel invitation");
-		});
+			console.log(modListArray);
+			//console.log(modlist);
+
+            if(modListArray.includes(inviteruser)) {
+                console.log("[+++] " + inviteruser + " is a mod in " + sub)
+				//args.send("i am a mod in " + sub)
+				
+
+				// Let's join!
+				pify(channel.acceptInvitation.bind(channel)).then(() => {
+					log.invites(`automatically accepted channel invitation to ${channel.name}`);
+					console.log("automatically accepted channel invitation to " + channel.name);
+
+					// Now that we've joined, let's send our introductory message!
+					pify(channel.sendUserMessage.bind(channel), channel.sendUserMessage(localize("en-US", "invite_message", {
+						inviter: inviter.nickname,
+						me: client.nickname,
+						prefix,
+					}))).then(() => {
+						log.invites("sent introductory message");
+						console.log("sent introductory message");
+
+					}).catch(() => {
+						//log.invites("failed to send introductory message");
+						//console.log("failed to send introductory message");
+
+					});
+				}).catch(() => {
+					log.invites("failed to accept channel invitation");
+					console.log("failed to accept channel invitation");
+
+				});
+
+            } else {
+                console.log("[!] I am NOT mod in " + sub)
+				//args.send("Command only available to mods")
+				
+            }
+
+
+		}).catch(function(error) {
+		  console.log(error);
+		});	
+
 	}
 };
 
