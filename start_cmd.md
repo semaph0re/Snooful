@@ -1,1 +1,1 @@
-DEBUG=snooful:* npm restart
+DEBUG=navsnoobot:* npm restart
