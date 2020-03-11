@@ -141,14 +141,6 @@ var url = "mongodb://localhost:27017/";
 
 const vader = require('vader-sentiment');
 
-//WORKING ON ANNOUNCE FEATURE FOR EVERY FEW HUORS
-// var time=moment().tz("EST").format();
-// if(time == "2019-01-30T22:04:00.153Z"){
-// 	console.log("THE TIME IS RIGHT!!!!");
-// 	console.log("THE TIME IS RIGHT!!!!");
-// 	console.log("THE TIME IS RIGHT!!!!");
-// }
-
 function getMessage(message_inp) {
 	//console.log(message_inp);
 }
