@@ -2,6 +2,7 @@ const wiki = require("wikijs").default();
 
 module.exports = {
 	aliases: [
+		"w",
 		"wiki",
 	],
 	arguments: [{

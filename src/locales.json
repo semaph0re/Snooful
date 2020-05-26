@@ -18,8 +18,8 @@
 		"argument_type_user": "user",
 		"argument_unavailable_choice": "Your {2} for the '{key}' argument is not one of the available choices.",
 		"astronauts_datatype": "astronauts in space",
-		"birthday_message": "Happy {0}, {1}!",
-		"birthday_song": "Happy {0} to you,\nhappy {0} to you!\nHappy {0}, dear {1}...\nhappy {0} to you!",
+		"birthday_message": "Happy birthday, {1}!",
+		"birthday_song": "Happy birthday to you,\nhappy birthday to you!\nHappy birthday, dear {1}...\nhappy birthday to you!",
 		"birthday_type": [
 			"birthday",
 			"cake day"
@@ -33,14 +33,19 @@
 		"bytes_conversion": "Converting that amount of bytes gives us {}.",
 		"bytes_conversion_failed": "I could not convert those bytes.",
 		"clear_join_message": "The join message will not be sent.",
+		"clear_leave_message": "The leave message will not be sent.",
 		"clear_join_message_no_change": [
 			"I haven't been sending the join message.",
 			"I'd stop sending the join message, if not for the fact that I haven't been doing that in the first place."
 		],
-		"clear_leave_message": "The leave message will not be sent.",
 		"clear_leave_message_no_change": [
 			"I haven't been sending the leave message.",
 			"I'd stop sending the leave message, if not for the fact that I haven't been doing that in the first place."
+		],
+		"clear_ban_message": "The ban message will not be sent.",
+		"clear_ban_message_no_change": [
+			"I haven't been sending the ban message.",
+			"I'd stop sending the ban message, if not for the fact that I haven't been doing that in the first place."
 		],
 		"color_amount_too_high": "I cannot provide you with {} colors because that would spam this chat.",
 		"color_amount_too_low": "I need to provide you with at least one name for this color.",
@@ -136,7 +141,7 @@
 			"The GitLab mirror of the GitHub repository can be found at {}.",
 			"There is a mirror of the GitHub repository on GitLab, which you can find at {}."
 		],
-		"info": "I am u/{0} ran by u/navkthx, ready to help you with anything you need!\nMy prefix is {1}, so to find a command you just do {1}command.\nI was made by haykam821, but please direct all questions and concerns via {1}feedback!",
+		"info": "navsnoobot v0.420 by u/navkthx - a mod of Snooful (originally by u/haykam821) for the vile ",
 		"integer_argument_invalid": "The value provided for the '{key}' argument must be an integer.",
 		"integer_argument_too_high": "The maximum for the '{key}' argument is {max}, but you gave {1}.",
 		"integer_argument_too_low": "The minimum for the '{key}' argument is {min}, but you gave {1}.",
@@ -219,6 +224,8 @@
 		],
 		"update_join_message": "The join message has been updated.",
 		"update_join_message_no_change": "That is already the join message.",
+		"update_ban_message": "The ban message has been updated.",
+		"update_ban_message_no_change": "That is already the ban message.",
 		"update_leave_message": "The leave message has been updated.",
 		"update_leave_message_no_change": "That is already the leave message.",
 		"urban_dictionary_no_result": [

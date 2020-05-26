@@ -1,14 +1,26 @@
+const vader = require('vader-sentiment');
+
+const url = require("url-escape-tag");
+
+// const program = require("commander");
+const request = require("request");
+const xpath = require('xpath');
+const dom = require('xmldom').DOMParser;
+
+// var ta = require('./timeago.js')
 const MongoClient = require('mongodb').MongoClient;
 const mongourl = 'mongodb://localhost:27017';
+var ta = require("time-ago")
 
+var pfp_url = ""
 
 module.exports = {
 	arguments: [{
-		description: "Get last 5 quotes",
+		description: "Get banned users",
 		key: "query",
 		type: "string",
 	}],
-	description: "Get last 5 quotes",
+	description: "Get banned users",
 	handler: args => {
         message=args.query
         // console.log(message);
@@ -62,10 +74,10 @@ module.exports = {
 
 			MongoClient.connect(mongourl, function(err, db) {
 				if (err) throw err;
-				var dbo = db.db("chatdb");
+				var dbo = db.db("chatdb-dev");
 			  
 				var final = "";
-				dbo.collection("quote_collection")
+				dbo.collection("chan_settings_collection")
 				// .find({"channel":qChan, "sender":args.query})
 				.find({"channel":qChan})
 				.limit(10)
@@ -75,11 +87,12 @@ module.exports = {
 					var num = 1;
 					items.forEach(function(item){
 						//console.log(num + ") " + item);
-						final = final + num + ") " + item.sender + ": \"" + item.quote + "\"\n";
+						// final = final + num + ") " + item.byUser + ": \"" + item.user + "\"\n";
+						final = final + num + ") " + item.user + "\n";
 						num++;
 					});
 					console.log(final);
-					args.send("The last 10 added quotes were: \n" + final)
+					args.send("Users banned from bot in #" + qChan + ": \n" + final)
 	
 					db.close();
 				});
@@ -92,24 +105,24 @@ module.exports = {
 
 			MongoClient.connect(mongourl, function(err, db) {
 				if (err) throw err;
-				var dbo = db.db("chatdb");
+				var dbo = db.db("chatdb-dev");
 			  
 				var final = "";
-				dbo.collection("quote_collection")
-				.find({"channel":qChan, "sender":username})
+				dbo.collection("chan_settings_collection")
+				.find({"channel":qChan})
 				// .find({"channel":qChan})
-				.limit(5)
+				// .limit(5)
 				.sort({"time": -1})
 				.toArray(function(err, items) {
 					console.log(items);
 					var num = 1;
 					items.forEach(function(item){
 						//console.log(num + ") " + item);
-						final = final + num + ") " + item.sender + ": \"" + item.quote + "\"\n";
+						final = final + num + ") " + item.user + "\n";
 						num++;
 					});
 					console.log(final);
-					args.send("The last quotes by " + username + " were: \n" + final)
+					args.send("Users banned from bot in #" + qChan + ": \n" + final)
 	
 					db.close();
 				});
@@ -124,7 +137,7 @@ module.exports = {
 
 		if(args.channel.name == ''){
 			console.log("[+] args.channel.name is undefined")
-			args.channel.name = 'Shoot The Shit'
+			// args.channel.name = 'Shoot The Shit'
 			//console.log(args.channel.name);
 			
 			// console.log("[+] checking if this is a DM")
@@ -150,5 +163,5 @@ module.exports = {
 
 
 	},
-	name: "quotes",
+	name: "banned",
 };

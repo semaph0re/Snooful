@@ -7,14 +7,14 @@ var pfp_url = ""
 
 module.exports = {
     aliases: [
-		"sb",
+        "bit"
 	],
 	arguments: [{
-		description: "Throw a snowball at someone",
+		description: "bite someone",
 		key: "query",
 		type: "string",
 	}],
-	description: "Throw a snowball at someone",
+	description: "bite someone",
 	handler: args => {
         username=args.query
         console.log(username);
@@ -28,14 +28,12 @@ module.exports = {
         
 
         pfp_url=url`https://www.reddit.com/user/${username}`;
-        console.log(pfp_url)
+        //console.log(pfp_url)
 
-        if( args.author == username) {
-            // args.send("*" + args.author + " rapes himself*");
-        } else {
-            args.send("*" + args.author + " throws a snowball at " + username + "*");
-        }
+        
+        args.send("*" + args.author + " bites the hell outta " + username + "*");
+        // args.send("* casadiax is a fag *");
 
     },
-	name: "snowball",
+	name: "bite",
 };

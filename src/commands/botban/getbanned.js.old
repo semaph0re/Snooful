@@ -1,0 +1,92 @@
+const vader = require('vader-sentiment');
+const navtools = require("./../utils/navtools.js");
+const navMongo = require("./../utils/navMongo.js");
+const url = require("url-escape-tag");
+
+// const program = require("commander");
+const request = require("request");
+const xpath = require('xpath');
+const dom = require('xmldom').DOMParser;
+
+// var ta = require('./timeago.js')
+const MongoClient = require('mongodb').MongoClient;
+const mongourl = 'mongodb://localhost:27017';
+var ta = require("time-ago")
+
+var pfp_url = ""
+
+module.exports = {
+	aliases: [
+		"banned",
+	],
+	arguments: [{
+		description: "Get banned users in a chat",
+		key: "query",
+		type: "string",
+	}],
+	description: "Get banned users in a chat",
+	handler: args => {
+
+		//return false;
+
+		//navtools.dbtest(args);
+		if(args.channel.name == ''){
+			console.log("[+] args.channel.name is undefined")
+			//args.channel.name = 'Shoot The Shit'
+			var chanCmd = "Shoot The Shit";
+		} else {
+			var chanCmd = args.channel.name;
+
+		}
+		// var bannedUsers = navMongo.getBanned(chanCmd);
+		console.log(navMongo.getBanned(chanCmd));
+		// args.send(bannedUsers);
+		// if(args.channel.name == ''){
+		// 	console.log("[+] args.channel.name is undefined")
+		// 	//args.channel.name = 'Shoot The Shit'
+		// 	var chanCmd = "Shoot The Shit";
+
+		// 	//console.log(args.channel.name);
+			
+		// 	console.log("[+] checking if this is a DM")
+		// 	if(args.channel.customType == 'direct'){
+		// 		console.log("[+] yes this is a DM")
+		// 		args.send("this command cannot be used in DM")
+		// 		var chanCmd = "Shoot The Shit";
+
+		// 		// return;
+
+		// 	} else {
+		// 		console.log("[+] this is not a DM")
+		// 	}
+		// 	// return;
+
+		// }
+
+		console.log("[+] checking if this is a DM => " + navtools.isThisDM(args.channel))
+
+		//var chanCmd = "Shoot The Shit";
+
+        //message=args.query
+        // console.log(message);
+
+		
+
+		//args.send(usrMsgs.sender + " was last seen in [" + usrMsgs.channel + "] " + ta.ago(usrMsgs.time) + " (" + onDate + ") saying: \"" + usrMsgs.message + "\"")
+
+	
+		// check if a username was provided
+		console.log("=============================")
+		console.log("=== username ===")
+		console.log(navtools.parseUsername(args.query));
+		console.log("=============================")
+
+
+		console.log(bannedUsers)
+		//args.send(bannedUsers)
+		
+		console.log("[+] query provided: query: " + args.query);
+
+	},
+	name: "getbanned",
+};

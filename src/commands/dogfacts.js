@@ -5,34 +5,20 @@ const xpath = require('xpath');
 const dom = require('xmldom').DOMParser;
 var mod_list_url = ""
 
-
 module.exports = {
 	aliases: [
-		"leavemessage",
-		"setleavemsg",
-		"leavemsg",
-		"setquitmessage",
-		"quitmessage",
-		"setquitmsg",
-		"quitmsg",
-		"setgoodbyemessage",
-		"goodbyemessage",
-		"setgoodbyemsg",
-		"goodbyemsg",
-		"setbyemessage",
-		"byemessage",
-		"setbyemsg",
-		"byemsg",
+		"dogfacts",
+        "dfact",
+		"df",
+        
 	],
 	arguments: [{
-		description: "The new leave message.",
-		key: "leave-message",
+		description: "Get a random dog fact",
+		key: "query",
 		type: "string",
 	}],
-	description: "Sets the message announced after a user leaves.",
+	description: "Get a random dog fact",
 	handler: args => {
-
-
         username=args.author
 
         function parseUsername(username) {
@@ -59,8 +45,11 @@ module.exports = {
         var sub = args.chData.subreddit.name;
         console.log(sub)
 
-        mod_list_url=url`https://www.reddit.com/r/${sub}/about/moderators.json`;
+        // mod_list_url=url`https://www.reddit.com/r/${sub}/about/moderators.json`;
         // mod_list_url=url`https://www.reddit.com/user/${username}`;
+
+        mod_list_url=url`https://dog-api.kinduff.com/api/facts?number=1`;
+
         console.log(mod_list_url)
 
 
@@ -71,58 +60,42 @@ module.exports = {
             //console.log(bdy);
 
             var parsed = JSON.parse(bdy);
-
-            console.log(parsed)
+            var final_output = parsed.facts[0];
+            console.log(final_output)
             //this is the actual array we'll be working with
-            var modListArray = [];
+            // var modListArray = [];
             
-            // this one is to produce a nice list in the chan
-            var modlist = "";
+            // // this one is to produce a nice list in the chan
+            // var modlist = "";
 
-            parsed.data.children.forEach(function(child) {
-                var modName = child.name.replace(/,/g,"");
-                //console.log(modName);
-                modlist = modlist + modName.replace(/,/g,"") + "\n";
-                modListArray.push(modName);
-            });
-            console.log(modListArray);
-            console.log(modlist);
+            // parsed.data.children.forEach(function(child) {
+            //     var modName = child.name.replace(/,/g,"");
+            //     //console.log(modName);
+            //     modlist = modlist + modName.replace(/,/g,"") + "\n";
+            //     modListArray.push(modName);
+            // });
+            // console.log(modListArray);
+            // console.log(modlist);
 
-            //args.send(modlist);
+            args.send(final_output);
             if(err){
-                console.log("[+] ERROR retreiving mod list!")
+                console.log("[+] ERROR retreiving cat fact!")
                 console.log(err)
             }
             
-            console.log("[+] Username: " + username);
-            console.log("[+] modListArray");
-            console.log(modListArray);
-            console.log(modListArray.includes(username));
+            console.log(final_output);
+            // console.log(modListArray);
+            // console.log(modListArray.includes(username));
 
-            if(modListArray.includes(username)) {
-                console.log("i am a mod in " + sub)
-				
-				const oldMsg = args.settings.get("leave_message");
-				if (args.leaveMessage) {
-					if (oldMsg === args.leaveMessage) {
-						args.send(args.localize("update_leave_message_no_change"));
-					} else {
-						args.settings.set("leave_message", args.leaveMessage);
-						args.send(args.localize("update_leave_message"));
-					}
-				} else if (oldMsg === undefined) {
-					args.send(args.localize("clear_leave_message_no_change"));
-				} else {
-					args.settings.clear("leave_message");
-					args.send(args.localize("clear_leave_message"));
-				}
-	
-            } else {
-                console.log("i am NOT mod in " + sub)
-                args.send("Command only available to mods")
-            }
+            // if(modListArray.includes(username)) {
+            //     console.log("i am a mod in " + sub)
+            //     args.send("i am a mod in " + sub)
+            // } else {
+            //     console.log("i am NOT mod in " + sub)
+            //     args.send("i am NOT mod in " + sub)
+            // }
 
-            console.log(sub)
+            // console.log(sub)
             //console.log(args);
             // var xml = bdy
             // var doc = new dom().parseFromString(xml)
@@ -148,8 +121,6 @@ module.exports = {
             // }
             // args.send("error, make sure username is correct")
         })
-    		
-	},
-	longDescription: "Sets the message that is sent when a user leaves the channel. {USER} is replaced with the user's name.",
-	name: "setleavemessage",
+    },
+	name: "dogfact",
 };

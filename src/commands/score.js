@@ -58,7 +58,7 @@ module.exports = {
 				 return string.substring(0,200)+'...';
 			else
 				 return string;
-	 };
+		};
 
 		// check if a username was provided
 		if(args.query === undefined){
@@ -103,7 +103,7 @@ module.exports = {
 		  
 			dbo.collection("chat_collection")
 			.find({channel: qChan, sender: qUser, time: {
-				$gte: new Date(new Date().getTime()-86400 * 7 *1000).toISOString() //86400 seconds in a dat * 3 days * 1000 to conv from ms to seconds
+				$gte: new Date(new Date().getTime()-86400 * 7 *1000).toISOString() //86400 seconds in a day * 7 days * 1000 to conv from ms to seconds
 			}})
 			.sort({"sentiment.compound": -1})
 			.toArray(function(err, items) {
