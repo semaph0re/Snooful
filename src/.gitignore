@@ -1,5 +1,7 @@
 package-lock.json
 *.zip
+*.7z
+*.old
 #nav dev
 nav-dev
 chatdb
